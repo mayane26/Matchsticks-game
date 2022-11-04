@@ -267,7 +267,7 @@ int computer() {
     int choice = 0;
 
     //Ask the user to choose between 2 modes
-    printf("Hi", "My name is Mr Robot\n"
+    printf("Hi, My name is Mr Robot\n"
                             "Please choose the level mode: \n"
                             "1 - Easy\n"
                             "2 - Difficult\n"
@@ -284,7 +284,7 @@ int computer() {
     
     //Option 2 is the difficult level
     if (choice == 2) {
-            printf("You chose the difficult level");
+            printf("You chose the difficult level\n");
             return difficult();
         }
         return 0;
@@ -307,13 +307,13 @@ int play() {
 
         // Option 1 is the easy level
         if (choice == 1) {
-            printf("You chose computer mode, easy level!\n");
+            printf("You chose human mode!\n");
             return human();
         }
         
         //Option 2 is the difficult level
         if (choice == 2) {
-            printf("You chose computer mode, difficult level!\n");
+            printf("You chose computer mode!\n");
             return computer();
         }
     }
