@@ -31,7 +31,7 @@ int human() {
         int choice = 0;
         int match = 0;
 
-        //Ask the user to pick between 1 to 3 matchsticks
+        //Ask the user to pick between 1 and 3 matchsticks
         printf("Take 1 to 3 matches to remove them:\n");
         scanf("%d", &match);
 
@@ -44,7 +44,7 @@ int human() {
             break;
         }
         
-        /*The variable matchsticksNumbers will change each time the user chooses a new matchsticknumber called match. 
+        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match. 
         MatchsticksNumbers inside the variable is always the last value retrieved */
         matchsticksNumbers = matchsticksNumbers - match;
  
@@ -103,7 +103,7 @@ int easy(){
         //Initialization of the variable
         int match = 0;
         
-        //Ask the user to pick between 1 to 3 matchsticks
+        //Ask the user to pick between 1 and 3 matchsticks
         printf("Take 1 to 3 matches to remove them: %s \n", &yourName);
         scanf("%d", &match);
 
@@ -116,7 +116,7 @@ int easy(){
             break;
         }
  
-        /*The variable matchsticksNumbers will change each time the user chooses a new matchsticknumber called match. 
+        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match. 
         MatchsticksNumbers inside the variable is always the last value retrieved */
         matchsticksNumbers = matchsticksNumbers - match;
 
@@ -177,7 +177,7 @@ int difficult() {
         //Initialization of the variables
         int match = 0;
 
-        //Ask the user to pick between 1 to 3 matchsticks
+        //Ask the user to pick between 1 and 3 matchsticks
         printf("Take 1 to 3 matches to remove them:\n");
         scanf("%d", &match);
 
@@ -190,7 +190,7 @@ int difficult() {
             break;
         }
 
-        /*The variable matchsticksNumbers will change each time the user chooses a new matchsticknumber called match. 
+        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match. 
         MatchsticksNumbers inside the variable is always the last value retrieved */
         matchsticksNumbers = matchsticksNumbers - match;
 
