@@ -10,4 +10,4 @@ The goal here is clear:
 
               Create this game in C language. 
 
-      We will increase the level by allowing the user to play with the computer. 
+      We will increase the level by allowing the user to play with the computer in a difficult level!
