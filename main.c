@@ -1,152 +1,226 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <conio.h>
 #include <stdlib.h>
 
+void play();
+void computer();
+int quit();
+void flush();
+int score();
 
-//First function, this is the Human mode, each player chooses the number of matches he wants to remove
+int decide(){
 
-int human() {
+    int choice=0;
+    printf("Do you want: \n"
+           "1- To play again\n"
+           "2- To see the scores\n"
+           "3- To quit\n"
+           "Your choice :");
+    flush();
+    scanf("%d", &choice);
 
-    // Name that does not exceed 20 characters
-    char yourName[20]= "" ;
-    
-    //Ask the users to enter their names
-    printf("Please enter your name:");
-    scanf("%19s",&yourName);
-
-    char friendName[20]= "" ;
-    printf("Please enter the other name:");
-    scanf("%19s",&friendName);
-    
-    //Initialization of the number of matches
-    int matchsticksNumbers = 30 ;
-
-    printf("It's your turn to play %s\n",&yourName);
-
-    //loop as long as the number of matches is not equal to 0
-    while (matchsticksNumbers!=0) {
-
-        //Initialization of the variables
-        int choice = 0;
-        int match = 0;
-
-        //Ask the user to pick between 1 and 3 matchsticks
-        printf("Take 1 to 3 matches to remove them:\n");
-        scanf("%d", &match);
-
-        //Loop as long they do not enter between 1 and 3, a message is printed and the user must choose another number
-        while(match > 3 || match < 1){
-            printf("You cannot choose this number you cheater!\n"
-                   "Choose another number\n");
-            scanf("%d", &match);
-
+    switch (choice) {
+        case 1:
+            printf("Welcome back!\n");
+            play();
             break;
-        }
-        
-        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match. 
-        MatchsticksNumbers inside the variable is always the last value retrieved */
-        matchsticksNumbers = matchsticksNumbers - match;
- 
-        //print the matchsticks taking into consideration the last value of matchsticksNumbers
-        for(int a =0; a<matchsticksNumbers;a++ ){
-            printf("| ");
-        }
 
-        //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-        if(matchsticksNumbers <= 0){
-
-            printf("O matchsticks left\n"
-                       "you have lost!\n");
-            printf("Do you want: \n"
-                   "1- To play again\n"
-                   "2- To see the scores\n"
-                   "3- To quit\n"
-                   "Your choice :");
-            scanf("%d",&choice);
-            if (choice == 1){
-                printf("Welcome back!\n");
-
-            }
-
+        case 2:
+            score();
             break;
-        }
-        
-        //It's the turn to the other player
-        printf("\n");
-        printf("%d"" matchsticks left\nIt's your turn to play %s\n",matchsticksNumbers,&friendName);
+        case 3:
+            return quit();
+
 
     }
 
 }
 
-int easy(){
+void flush() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { }
+}
+
+//Function to displays the matchs
+void displayMatchs(int matchsticksNumbers){
+    for (int a = 0; a < matchsticksNumbers; a++) {
+        printf("| ");
+    }
+
+    for (int i = 0; i < 30 - matchsticksNumbers; i++) {
+        printf("- ");
+
+    }
+}
+
+//This is the Human mode, each player chooses the number of matches he wants to remove
+void human() {
 
     // Name that does not exceed 20 characters
-    char yourName[20]= "" ;
+    char yourName[20] = "";
 
     //Ask the users to enter their names
     printf("Please enter your name:");
+    scanf("%19s", &yourName);
 
-    scanf("%19s",&yourName);
+    char friendName[20] = "";
+    printf("Please enter the other name:");
+    scanf("%19s", &friendName);
 
-    printf("Hi, me it's the computer Mr Robot!\n");
 
     //Initialization of the number of matches
-    int matchsticksNumbers = 30 ;
+    int matchsticksNumbers = 30;
 
-    printf("It's your turn to play %s\n",&yourName);
+    printf("It's your turn to play %s\n", &yourName);
 
-    //loop as long as the number of matches is not equal to 0
-    while (matchsticksNumbers!=0) {
+    //Loop as long as the number of matches is not equal to 0
+    while (matchsticksNumbers != 0) {
 
-        //Initialization of the variable
+        //Initialization of the variables
+        int choice = 0;
         int match = 0;
-        
+        int isJ1Playing;
+
         //Ask the user to pick between 1 and 3 matchsticks
-        printf("Take 1 to 3 matches to remove them: %s \n", &yourName);
+        printf("Take 1 to 3 matches to remove them:\n");
         scanf("%d", &match);
 
+
         //Loop as long they do not enter between 1 and 3, a message is printed and the user must choose another number
-        while(match > 3 || match < 1){
+        while(match < 1 || match > 3){
             printf("You cannot choose this number you cheater!\n"
                    "Choose another number\n");
+
+            flush();
             scanf("%d", &match);
 
             break;
         }
- 
-        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match. 
-        MatchsticksNumbers inside the variable is always the last value retrieved */
-        matchsticksNumbers = matchsticksNumbers - match;
 
-        
-        //print the matchsticks taking into consideration the last value of matchsticksNumbers
-        for(int a =0; a<matchsticksNumbers;a++ ){
-            printf("| ");
+        //If the matchs are equals to 1, 2 or 3 then:
+
+            /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
+        MatchsticksNumbers inside the variable is always the last value retrieved */
+            matchsticksNumbers = matchsticksNumbers - match;
+
+            //print the matchsticks taking into consideration the last value of matchsticksNumbers
+            displayMatchs(matchsticksNumbers);
+
+
+            //If the matchsticksNumber is equal or inferior to 0 then the game is finished
+            if (matchsticksNumbers <= 0) {
+
+                if (isJ1Playing==0) {
+                    printf("O matchsticks left\n %s you have lost!\n", yourName);
+                    decide();
+                }else{
+                    printf("O matchsticks left\n %s you have lost!\n", friendName);
+                    decide();
+                    break;
+                }
+
+            }
+
+
+
+        if (isJ1Playing) {
+            printf("\n");
+            printf("It's your turn to play %s\n", yourName);
+            isJ1Playing = 0;
+        } else {
+            printf("\n");
+            printf("%d"" matchsticks left\n"
+                   "It's your turn to play %s\n", matchsticksNumbers, friendName);
+            isJ1Playing = 1;
+
         }
 
-        //Time to the computer to play!
-        printf("\n");
-        printf("%d"" matchsticks left\nIt's the turn to the computer to play\n",matchsticksNumbers);
+    }
 
 
-        //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-        if(matchsticksNumbers <= 0){
+}
 
-            printf("O matchsticks left\n"
-                   "you have lost!\n");
+
+//This is the easy level computer method, the user chooses 1, 2 or 3 matchsticks and the computer chooses randomly
+int easy() {
+
+    int isJ1Playing;
+    // Name that does not exceed 20 characters
+    char yourName[20] = "";
+
+    //Ask the users to enter their names
+    printf("Please enter your name:");
+
+    scanf("%19s", &yourName);
+
+    printf("Hi, me it's the computer Mr Robot!\n");
+
+    //Initialization of the number of matches
+    int matchsticksNumbers = 30;
+
+    printf("It's your turn to play %s\n", &yourName);
+
+    //loop as long as the number of matches is not equal to 0
+    while (matchsticksNumbers != 0) {
+
+        //Initialization of the variables
+        int choice = 0;
+        int match = 0;
+
+
+        //Ask the user to pick between 1 and 3 matchsticks
+        printf("Take 1 to 3 matches to remove them %s: \n", &yourName);
+        scanf("%d", &match);
+
+        //Loop as long they do not enter between 1 and 3, a message is printed and the user must choose another number
+        while (match > 3 || match < 1) {
+            printf("You cannot choose this number you cheater!\n"
+                   "Choose another number\n");
+            flush();
+            scanf("%d", &match);
+
             break;
         }
 
-           
-            int num = rand() % 3 + 1; // use rand() function to get the random number
-            printf(" %d ", num);
-            getch();
+        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
+        MatchsticksNumbers inside the variable is always the last value retrieved */
+        matchsticksNumbers = matchsticksNumbers - match;
 
-            //print the number of matchsticks left
-            printf("\n");
-            printf("%d"" matchsticks left\n",matchsticksNumbers);
+        //print the matchsticks taking into consideration the last value of matchsticksNumbers
+        displayMatchs(matchsticksNumbers);
+
+        //Time to the computer to play!
+        printf("\n");
+        printf("%d"" matchsticks left\nIt's the turn to the computer to play\n", matchsticksNumbers);
+
+
+        //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
+        if (matchsticksNumbers <= 0) {
+
+            if (isJ1Playing == 1) {
+                printf("O matchsticks left\n %s you have lost!\n", yourName);
+                decide();
+                break;
+
+            } else {
+                printf("O matchsticks left\n you have lost mrRobot!\n");
+                decide();
+                break;
+            }
+
+        }
+
+        int num = rand() % 3 + 1; // use rand() function to get the random number
+        printf(" %d \n", num);
+
+        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
+        MatchsticksNumbers inside the variable is always the last value retrieved */
+        matchsticksNumbers = matchsticksNumbers - match;
+        displayMatchs(matchsticksNumbers);
+
+        //print the number of matchsticks left
+        printf("\n");
+        printf("%d"" matchsticks left\n", matchsticksNumbers);
 
 
 
@@ -175,7 +249,9 @@ int difficult() {
     while (matchsticksNumbers != 0) {
 
         //Initialization of the variables
+        int choice=0;
         int match = 0;
+        int isJ1Playing;
 
         //Ask the user to pick between 1 and 3 matchsticks
         printf("Take 1 to 3 matches to remove them:\n");
@@ -185,74 +261,83 @@ int difficult() {
         while (match > 3 || match < 1) {
             printf("You cannot choose this number you cheater!\n"
                    "Choose another number\n");
+            flush();
             scanf("%d", &match);
 
             break;
         }
 
-        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match. 
-        MatchsticksNumbers inside the variable is always the last value retrieved */
-        matchsticksNumbers = matchsticksNumbers - match;
+            /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
+            MatchsticksNumbers inside the variable is always the last value retrieved */
+            matchsticksNumbers = matchsticksNumbers - match;
 
-        
-        //print the matchsticks taking into consideration the last value of matchsticksNumbers
-        for (int a = 0; a < matchsticksNumbers; a++) {
-            printf("| ");
-        }
 
-        //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-        if (matchsticksNumbers <= 0 ) {
+            //print the matchsticks taking into consideration the last value of matchsticksNumbers
+            displayMatchs(matchsticksNumbers);
 
-            printf("O matchsticks left\n"
-                   "you have lost!\n");
-            break;
+            //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
+            if (matchsticksNumbers <= 0) {
+
+                if (isJ1Playing==0) {
+                    printf("O matchsticks left\n %s you have lost!\n", yourName);
+                    decide();
+                    break;
+                }else{
+                    printf("O matchsticks left\n %s you have lost mrRobot!\n");
+                    decide();
+                    break;
+                }
+
+
         }
 
         //The turn to the computer
         printf("\n");
         printf("%d"" matchsticks left\nIt's the turn to the computer to play\n", matchsticksNumbers);
 
-        /*Use of the multiples strategy, if the player decides to take 1 match, the computer will take 3. If the player takes 2, the computer 
+        /*Use of the multiple's strategy, if the player decides to take 1 match, the computer will take 3. If the player takes 2, the computer
         will take 2 and if the player takes 3 the computer will take 1. */
 
         switch (match) {
             case 1 :
                 matchsticksNumbers = matchsticksNumbers - 3;
-                for (int a = 0; a < matchsticksNumbers; a++) {
-                    printf("| ");
-                }
+                displayMatchs(matchsticksNumbers);
 
                 printf("\n");
                 printf("%d"" matchsticks left\n", matchsticksNumbers);
                 break;
+
             case 2 :
                 matchsticksNumbers = matchsticksNumbers - 2;
-                for (int a = 0; a < matchsticksNumbers; a++) {
-                    printf("| ");
-                }
+                displayMatchs(matchsticksNumbers);
 
                 printf("\n");
                 printf("%d"" matchsticks left\n", matchsticksNumbers);
                 break;
             case 3:
                 matchsticksNumbers = matchsticksNumbers - 1;
-                for (int a = 0; a < matchsticksNumbers; a++) {
-                    printf("| ");
-                }
+                displayMatchs(matchsticksNumbers);
 
                 printf("\n");
                 printf("%d"" matchsticks left\n", matchsticksNumbers);
                 break;
 
-
         }
-        
+
+
         //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
         if (matchsticksNumbers <= 0) {
 
-            printf("O matchsticks left\n"
-                   "the computer has lost!\n");
-            break;
+            if (isJ1Playing==0) {
+                printf("O matchsticks left\n %s you have lost!\n", yourName);
+                decide();
+                break;
+            }else{
+                printf("O matchsticks left\n you have lost mrRobot!\n");
+                decide();
+                break;
+            }
+
         }
 
 
@@ -262,68 +347,186 @@ int difficult() {
 
 //Second function, the computer plays against the player according to the player's choice of level
 
-int computer() {
+void computer() {
 
     int choice = 0;
 
     //Ask the user to choose between 2 modes
     printf("Hi, My name is Mr Robot\n"
-                            "Please choose the level mode: \n"
-                            "1 - Easy\n"
-                            "2 - Difficult\n"
-                            "Your choice:\n");
+                 "Please choose the level mode: \n"
+                 "1 - Easy\n"
+                 "2 - Difficult\n"
+                 "Your choice:\n");
 
     scanf("%d", &choice);
 
-    //Option 1 is the easy level
-    if (choice == 1) {
+    //Loop as long they do not enter between 1 and 3, a message is printed and the user must choose another number
+    while(choice < 1 || choice > 2){
+        printf("It is not an option!\n"
+               "Please choose between 1 or 2\n");
+        flush();
+        scanf("%d", &choice);
 
-        printf("You chose the easy level!\n");
-        return easy();
+        break;
     }
-    
-    //Option 2 is the difficult level
-    if (choice == 2) {
+
+      switch (choice) {
+        //Option 1 is the easy level
+        case 1:
+            printf("You chose the easy level!\n");
+            easy();
+
+            //Option 2 is the difficult level
+        case 2:
             printf("You chose the difficult level\n");
-            return difficult();
-        }
-        return 0;
+            difficult();
+      }
+
 }
 
 
 //Third function is to choose the mode
+void play() {
 
-int play() {
+    int choice = 0;
 
-        int choice = 0;
+    //Ask the user to choose between the human mode or the computer mode
+    printf("What mode do you want to choose?\n"
+           "Your choice:\n"
+           "1- Human mode\n"
+           "2- Computer mode\n");
 
-        //Ask the user to choose between the human mode or the computer mode
-        printf("What mode do you want to choose?\n"
-               "Your choice:\n"
-               "1- Human mode\n"
-               "2- Computer mode\n");
+    flush();
+    scanf("%d", &choice);
 
+    //Loop as long they do not enter between 1 or 2
+    while(choice < 1 || choice > 2){
+        printf("You cannot choose this option!\n"
+               "Please choose another number\n");
+        flush();
         scanf("%d", &choice);
 
-        // Option 1 is the easy level
-        if (choice == 1) {
-            printf("You chose human mode!\n");
-            return human();
-        }
-        
-        //Option 2 is the difficult level
-        if (choice == 2) {
-            printf("You chose computer mode!\n");
-            return computer();
-        }
+        break;
     }
+
+        switch (choice) {
+            //Option 1 is the Human mode
+            case 1:
+
+                printf("You chose human mode!\n");
+                human();
+            break;
+
+            case 2:
+
+                printf("You chose computer mode!\n");
+                computer();
+            break;
+        }
+
+
+
+}
+
 
 //Fourth function is to quit the game
 int quit() {
 
-    printf("See you next time! Come back soon, we already miss you");
+    char ch;
+
+        printf("Please press the ENTER key\n");
+
+//read a single character
+        ch=fgetc(stdin);
+        if(ch==0x0A)
+        {
+            printf("Thank you, see you next time! Come back soon, we already miss you!\n");
+
+            return 0;
+        }
+
+
 }
 
+int rules(){
+
+    //Set the variable choice
+    int choice =0;
+
+    //Print the rules and let the user choice if he wants to play or quit
+    printf("The goal of the game is simple\n"
+           "This game is played with one or two players\n"
+           "There are two modes:\n"
+           "  1 - Human mode (play with a friend for example)\n"
+           "  2 - Computer mode\n"
+           "For the human mode each player removes 1 to 3 matchsticks maximum. The loser is the one "
+           "who has to remove the last one\n"
+           "matchstick\n"
+           "For the computer mode, the user plays against the computer\n"
+           "** Warning! For the computer mode, there are 2 levels. **\n"
+           "The easy level for beginners and the hard level for the experimented ones\n"
+           " *** What to do? ***\n"
+           "    1 - Play\n"
+           "    2 - Quit\n"
+           "Your choice:  ");
+           flush();
+           scanf("%d", &choice);
+
+    //Loop as long they do not enter between 1 or 2
+    while(choice < 1 || choice > 2){
+        printf("You cannot choose this option!\n"
+               "Please choose another number\n");
+        flush();
+        scanf("%d", &choice);
+
+    }
+
+        switch (choice) {
+
+            //Function to play
+            case 1:
+                play();
+                break;
+
+            //Function to quit
+            case 2:
+                return quit();
+
+    }
+
+}
+
+int score(){
+
+    // Set the variable
+    int choice=0;
+
+    printf("Here are the score\n");
+    printf("Do you want to play again or not?\n"
+           "1- Play\n"
+           "2- Quit\n");
+    scanf("%d", &choice );
+
+    //Loop as long they do not enter between 1 or 2
+    while(choice < 1 || choice > 2){
+        printf("You cannot choose this option!\n"
+               "Please choose another number\n");
+
+        flush();
+        scanf("%d", &choice);
+
+    }
+
+        switch (choice) {
+            case 1:
+                play();
+                break;
+            case 2:
+                return quit();
+
+
+        }
+    }
 
 
 //Main function : Introductions, rules, see the scores, play or quit
@@ -331,90 +534,95 @@ int quit() {
 int main() {
 
     bool isRunning = true;
-    
+
     while(isRunning) {
-        
+
         int choice = 0;
-        
+
         //Ask the user to choose between 4 options
         printf("  **** Hello, and welcome to the matchsticks game!****\n"
-             "Here are 3 menus:\n"
-             "You will first choose if you want to see the rules of the games or not,\n"
-             "then the matchsticks number to use,\n"
-             "and finally the numbers of the players...\n"
-             "  *What to do* ?\n"
-             "   1 - To play\n"
-             "   2 - To see the rules of the game\n"
-             "   3 - To see the scores\n"
-             "   4 - To quit\n"
-             "Your choice : ");
+               "Here are 3 menus:\n"
+               "You will first choose if you want to see the rules of the games or not,\n"
+               "then the matchsticks number to use,\n"
+               "and finally the numbers of the players...\n"
+               "  *What to do* ?\n"
+               "   1 - To play\n"
+               "   2 - To see the rules of the game\n"
+               "   3 - To see the credits\n"
+               "   4 - To see the scores\n"
+               "   5 - To quit\n"
+               "Your choice : ");
 
-      scanf("%d", &choice);
 
-      //Function to quit
-      if (choice == 4) {
-          return quit();
+        scanf("%d", &choice);
 
-      }
-      
-      //Function to see the rules
-      if (choice == 2) {
-          printf("The goal of the game is simple\n"
-                 "This game is played with one or two players\n"
-                 "There are two modes:\n"
-                 "  1 - Human mode (play with a friend for example)\n"
-                 "  2 - Computer mode\n"
-                 "For the human mode each player removes 1 to 3 matchsticks maximum. The loser is the one "
-                 "who has to remove the last one\n"
-                 "matchstick\n"
-                 "For the computer mode, the user plays against the computer\n"
-                 "** Warning! For the computer mode, there are 2 levels. **\n"
-                 "The easy level for beginners and the hard level for the experimented ones\n"
-                 " *** What to do? ***\n"
-                 "    1 - Play\n"
-                 "    2 - Quit\n"
-                 "Your choice:  "
-          );
-          scanf("%d", &choice);
-          
-          //Function to play 
-          if (choice==1) {
-              
-              return play();
-          }
-          
-          //Function to quit
-          if (choice==2){
-              
-              return quit();
-          }    
-          
-      }
-        
-      //Function to play the game
-      if (choice == 1) {
-          return play();
-      }
+        //Loop as long they do not enter options between 1 and 4
+        while(choice < 1 || choice > 5){
+            printf("You cannot choose this option!\n"
+                   "Please choose another option\n");
+            flush();
+            scanf("%d", &choice);
 
-      //Function to see the score
-      if (choice == 3) {
-          printf("Here are the score\n");
-          printf("Return to the menu if you want!\n"
-                 "1- Yes\n"
-                 "2- No (quit)\n");
-          scanf("%d", &choice );
+            break;
+        }
 
-          if (choice == 1) {
-              return main();
-          }
 
-          if (choice == 2) {
-              return quit();
-          }
+            switch (choice) {
 
-      }
+                //Function to play
+                case 1:
+                    play();
+                    break;
 
-   }
+                //Function to see the rules
+                case 2:
+                    rules();
+                    break;
+
+                //To see the credits
+                case 3:
+                    printf("************** CREDITS ****************\n"
+                           " **This code was made by Mayane Maman**\n\n ");
+                    printf("Do you want to play again or not?\n"
+                           "1- Play\n"
+                           "2- Quit\n");
+                    scanf("%d", &choice );
+
+                    //Loop as long they do not enter between 1 or 2
+                    while(choice < 1 || choice > 2){
+                        printf("You cannot choose this option!\n"
+                               "Please choose another number\n");
+
+                        flush();
+                        scanf("%d", &choice);
+
+                    }
+
+                    switch (choice) {
+                        case 1:
+                            play();
+                            break;
+                        case 2:
+                            return quit();
+
+
+                    }
+                    break;
+
+
+                //Function to see the score
+                case 4:
+                    score();
+                    break;
+
+                //Function to quit
+                case 5:
+                    return quit();
+
+            }
+
+
+    }
 
 }
 
