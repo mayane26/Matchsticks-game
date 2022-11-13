@@ -1,22 +1,27 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <windows.h>
 
 void play();
 void computer();
 int quit();
 void flush();
-int score();
+
+void color(int cText,int cBack)
+{
+    HANDLE H = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H,cBack*16+cText);
+}
 
 int decide(){
 
     int choice=0;
     printf("Do you want: \n"
            "1- To play again\n"
-           "2- To see the scores\n"
-           "3- To quit\n"
+           "2- To quit\n"
            "Your choice :");
-    flush();
+
     scanf("%d", &choice);
 
     switch (choice) {
@@ -26,11 +31,7 @@ int decide(){
             break;
 
         case 2:
-            score();
-            break;
-        case 3:
             return quit();
-
 
     }
 
@@ -44,13 +45,16 @@ void flush() {
 //Function to displays the matchs
 void displayMatchs(int matchsticksNumbers){
     for (int a = 0; a < matchsticksNumbers; a++) {
+        color(1,0);
         printf("| ");
     }
+    color(15,0);
 
     for (int i = 0; i < 30 - matchsticksNumbers; i++) {
+        color(1,0);
         printf("- ");
-
     }
+    color(15,0);
 }
 
 //This is the Human mode, each player chooses the number of matches he wants to remove
@@ -124,10 +128,20 @@ void human() {
 
 
         if (isJ1Playing) {
-            printf("\n");
             printf("It's your turn to play %s\n", yourName);
             isJ1Playing = 0;
+
         } else {
+            while(match < 1 || match > 3){
+                printf("You cannot choose this number you cheater!\n"
+                       "Choose another number\n");
+
+                flush();
+                scanf("%d", &match);
+
+                break;
+            }
+
             printf("\n");
             printf("%d"" matchsticks left\n"
                    "It's your turn to play %s\n", matchsticksNumbers, friendName);
@@ -210,7 +224,8 @@ int easy() {
 
         }
 
-        int num = rand() % 3 + 1; // use rand() function to get the random number
+        int num = rand() % 3 + 1; // use rand() function to get the random
+        // number
         printf(" %d \n", num);
 
         /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
@@ -255,6 +270,7 @@ int difficult() {
 
         //Ask the user to pick between 1 and 3 matchsticks
         printf("Take 1 to 3 matches to remove them:\n");
+
         scanf("%d", &match);
 
         //Loop as long they do not enter between 1 and 3, a message is printed and the user must choose another number
@@ -396,7 +412,7 @@ void play() {
            "1- Human mode\n"
            "2- Computer mode\n");
 
-    flush();
+
     scanf("%d", &choice);
 
     //Loop as long they do not enter between 1 or 2
@@ -446,6 +462,9 @@ int quit() {
         }
 
 
+
+
+
 }
 
 int rules(){
@@ -469,7 +488,7 @@ int rules(){
            "    1 - Play\n"
            "    2 - Quit\n"
            "Your choice:  ");
-           flush();
+
            scanf("%d", &choice);
 
     //Loop as long they do not enter between 1 or 2
@@ -496,37 +515,6 @@ int rules(){
 
 }
 
-int score(){
-
-    // Set the variable
-    int choice=0;
-
-    printf("Here are the score\n");
-    printf("Do you want to play again or not?\n"
-           "1- Play\n"
-           "2- Quit\n");
-    scanf("%d", &choice );
-
-    //Loop as long they do not enter between 1 or 2
-    while(choice < 1 || choice > 2){
-        printf("You cannot choose this option!\n"
-               "Please choose another number\n");
-
-        flush();
-        scanf("%d", &choice);
-
-    }
-
-        switch (choice) {
-            case 1:
-                play();
-                break;
-            case 2:
-                return quit();
-
-
-        }
-    }
 
 
 //Main function : Introductions, rules, see the scores, play or quit
@@ -549,15 +537,14 @@ int main() {
                "   1 - To play\n"
                "   2 - To see the rules of the game\n"
                "   3 - To see the credits\n"
-               "   4 - To see the scores\n"
-               "   5 - To quit\n"
+               "   4 - To quit\n"
                "Your choice : ");
 
 
         scanf("%d", &choice);
 
         //Loop as long they do not enter options between 1 and 4
-        while(choice < 1 || choice > 5){
+        while(choice < 1 || choice > 4){
             printf("You cannot choose this option!\n"
                    "Please choose another option\n");
             flush();
@@ -586,6 +573,7 @@ int main() {
                     printf("Do you want to play again or not?\n"
                            "1- Play\n"
                            "2- Quit\n");
+                    flush();
                     scanf("%d", &choice );
 
                     //Loop as long they do not enter between 1 or 2
@@ -610,13 +598,8 @@ int main() {
                     break;
 
 
-                //Function to see the score
-                case 4:
-                    score();
-                    break;
-
                 //Function to quit
-                case 5:
+                case 4:
                     return quit();
 
             }
