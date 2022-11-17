@@ -177,7 +177,8 @@ void human() {
 //This is the easy level computer method, the user chooses 1, 2 or 3 matchsticks and the computer chooses randomly
 void easy() {
 
-    int isJ1Playing;
+
+
     // Name that does not exceed 20 characters
     char yourName[20] = "";
 
@@ -191,18 +192,20 @@ void easy() {
     //Initialization of the number of matches
     int matchsticksNumbers = 30;
 
-    printf("It's your turn to play %s\n", &yourName);
+    int isJ1Playing;
 
     //loop as long as the number of matches is not equal to 0
     while (matchsticksNumbers != 0) {
 
         //Initialization of the variables
-        int choice = 0;
-        int match = 0;
 
+        int match = 0;
+        int num;
 
         //Ask the user to pick between 1 and 3 matchsticks
-        printf("Take 1 to 3 matches to remove them %s: \n", &yourName);
+
+        printf("%s Take 1 to 3 matches to remove them:\n", &yourName);
+
         scanf("%d", &match);
 
         //Loop as long they do not enter between 1 and 3, a message is printed and the user must choose another number
@@ -215,73 +218,91 @@ void easy() {
             break;
         }
 
+
         /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
         MatchsticksNumbers inside the variable is always the last value retrieved */
         matchsticksNumbers = matchsticksNumbers - match;
+
 
         //print the matchsticks taking into consideration the last value of matchsticksNumbers
         displayMatchs(matchsticksNumbers);
 
-        //Time to the computer to play!
-        printf("\n");
-        printf("%d"" matchsticks left\nIt's the turn to the computer to play\n", matchsticksNumbers);
 
-
-        //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-        if (matchsticksNumbers <= 0) {
-
-            if (isJ1Playing == 1) {
-                color(4,0);
-                printf("O matchsticks left\n %s you have lost!\n", yourName);
-                color(15,0);
-                decide();
-                break;
-
-            } else {
-                color(4,0);
-                printf("O matchsticks left\n you have lost mrRobot!\n");
-                color(15,0);
-                decide();
-                break;
-
-
-            }
-
-        }
-
-        int num = rand() % 3 + 1; // use rand() function to get the random
-        // number
-        printf(" %d \n", num);
-
-        /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
-        MatchsticksNumbers inside the variable is always the last value retrieved */
-        matchsticksNumbers = matchsticksNumbers - match;
-        displayMatchs(matchsticksNumbers);
-
-        //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-        if (matchsticksNumbers <= 0) {
-
-            if (isJ1Playing==0) {
-                color(4,0);
-                printf("O matchsticks left\n %s you have lost!\n", yourName);
-                color(15,0);
-                decide();
-                break;
-
-            }else{
-                color(4,0);
-                printf("O matchsticks left\n you have lost mrRobot!\n");
-                color(15,0);
-                decide();
-                break;
-
-            }
-
-        }
-
-        //print the number of matchsticks left
+        //The turn to the computer
         printf("\n");
         printf("%d"" matchsticks left\n", matchsticksNumbers);
+
+        if (isJ1Playing) {
+
+            isJ1Playing = 0;
+
+            //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
+            if (matchsticksNumbers <= 0) {
+
+                if (isJ1Playing==0) {
+
+                    color(4,0);
+                    printf("%s you have lost!\n", yourName);
+                    color(15,0);
+                    decide();
+                    break;
+
+                }
+
+
+            }
+
+
+
+
+        }else{
+
+            isJ1Playing = 1;
+
+            //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
+            if (matchsticksNumbers <= 0) {
+
+                if (isJ1Playing==1) {
+
+                    color(4,0);
+                    printf("O matchsticks left\n %s you have lost mrRobot!\n");
+                    color(15,0);
+                    decide();
+                    break;
+
+                }
+
+
+            }
+
+            printf("It's my turn\n");
+            /*Use of the multiple's strategy, if the player decides to take 1 match, the computer will take 3. If the player takes 2, the computer
+ will take 2 and if the player takes 3 the computer will take 1. */
+
+            if (matchsticksNumbers == 1 ) {
+                num = 1;
+            }
+            else if (matchsticksNumbers == 2 ) {
+                num = 1;
+            }
+            else if (matchsticksNumbers == 3 ) {
+                num = 2;
+            }else {
+                num = rand() % 3 + 1; // use rand() function to get the random
+                // number
+            }
+                printf(" %d \n", num);
+
+
+            matchsticksNumbers = matchsticksNumbers - num;
+            displayMatchs(matchsticksNumbers);
+
+            printf("\n");
+            printf("%d matchsticks left\n", matchsticksNumbers);
+
+
+        }
+
 
 
     }
@@ -303,7 +324,8 @@ void difficult() {
     //Initialization of the number of matches
     int matchsticksNumbers = 30;
 
-    printf("It's your turn to play %s\n", &yourName);
+
+    int isJ1Playing;
 
     //loop as long as the number of matches is not equal to 0
     while (matchsticksNumbers != 0) {
@@ -311,10 +333,11 @@ void difficult() {
         //Initialization of the variables
         int choice=0;
         int match = 0;
-        int isJ1Playing;
+        int matchComputer;
 
         //Ask the user to pick between 1 and 3 matchsticks
-        printf("Take 1 to 3 matches to remove them:\n");
+
+        printf("%s Take 1 to 3 matches to remove them:\n", &yourName);
 
         scanf("%d", &match);
 
@@ -328,6 +351,7 @@ void difficult() {
             break;
         }
 
+
         /*The variable matchsticksNumbers will change each time the user chooses a new matchstick number called match.
         MatchsticksNumbers inside the variable is always the last value retrieved */
         matchsticksNumbers = matchsticksNumbers - match;
@@ -336,132 +360,82 @@ void difficult() {
         //print the matchsticks taking into consideration the last value of matchsticksNumbers
         displayMatchs(matchsticksNumbers);
 
-        //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-        if (matchsticksNumbers <= 0) {
-
-            if (isJ1Playing==0) {
-                color(4,0);
-                printf("O matchsticks left\n %s you have lost!\n", yourName);
-                color(15,0);
-                decide();
-                break;
-
-            }else{
-                color(4,0);
-                printf("O matchsticks left\n %s you have lost mrRobot!\n");
-                color(15,0);
-                decide();
-                break;
-
-            }
-
-
-        }
-
 
         //The turn to the computer
         printf("\n");
-        printf("%d"" matchsticks left\nIt's the turn to the computer to play\n", matchsticksNumbers);
+        printf("%d"" matchsticks left\n", matchsticksNumbers);
 
-        /*Use of the multiple's strategy, if the player decides to take 1 match, the computer will take 3. If the player takes 2, the computer
-        will take 2 and if the player takes 3 the computer will take 1. */
+        if (isJ1Playing) {
 
-        switch (match) {
-            case 1 :
+            isJ1Playing = 0;
 
-                matchsticksNumbers = matchsticksNumbers - 3;
-                displayMatchs(matchsticksNumbers);
+            //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
+            if (matchsticksNumbers <= 0) {
+
+                if (isJ1Playing==0) {
+
+                    color(4,0);
+                    printf("%s you have lost!\n", yourName);
+                    color(15,0);
+                    decide();
+                    break;
+
+                }
+
+
+            }
+
+            printf("It's your turn to play %s\n", &yourName);
+
+
+        }else{
+            isJ1Playing = 1;
+
+            if (matchsticksNumbers <= 0) {
                 //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-                if (matchsticksNumbers <= 0) {
+                if (isJ1Playing==1) {
 
-                    if (isJ1Playing==0) {
-                        color(4,0);
-                        printf("O matchsticks left\n %s you have lost!\n", yourName);
-                        color(15,0);
-                        decide();
-                        break;
-
-                    }else{
-                        color(4,0);
-                        printf("O matchsticks left\n you have lost mrRobot!\n");
-                        color(15,0);
-                        decide();
-                        break;
-
-                    }
+                    color(4,0);
+                    printf("O matchsticks left\n %s you have lost mrRobot!\n");
+                    color(15,0);
+                    decide();
+                    break;
 
                 }
 
-                printf("\n");
-                printf("%d"" matchsticks left\n", matchsticksNumbers);
-                break;
 
-            case 2 :
-                matchsticksNumbers = matchsticksNumbers - 2;
-                displayMatchs(matchsticksNumbers);
-                //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-                if (matchsticksNumbers <= 0) {
+            }
 
-                    if (isJ1Playing==0) {
-                        color(4,0);
-                        printf("O matchsticks left\n %s you have lost!\n", yourName);
-                        color(15,0);
-                        decide();
-                        break;
+            printf("It's my turn\n");
+            /*Use of the multiple's strategy, if the player decides to take 1 match, the computer will take 3. If the player takes 2, the computer
+ will take 2 and if the player takes 3 the computer will take 1. */
 
-                    }else{
-                        color(4,0);
-                        printf("O matchsticks left\n you have lost mrRobot!\n");
-                        color(15,0);
-                        decide();
-                        break;
-
-                    }
-
-                }
-
-                printf("\n");
-                printf("%d"" matchsticks left\n", matchsticksNumbers);
-                break;
+            if (matchsticksNumbers == 1 ) {
+                matchComputer = 1;
+            }
+            else if (matchsticksNumbers == 2 ) {
+                matchComputer = 1;
+            }
+            else if (matchsticksNumbers == 3 ) {
+                matchComputer = 2;
+            }
+            else if (matchsticksNumbers == 4 ) {
+                matchComputer = 3;
+            }
+            else{
+                matchComputer = matchsticksNumbers % 4 + 1;
+            }
 
 
-            case 3:
-
-                matchsticksNumbers = matchsticksNumbers - 1;
-                displayMatchs(matchsticksNumbers);
-
-                //If the value matchsticksNumbers is smaller or equal to 0, so the last who played lost, return the function!
-                if (matchsticksNumbers <= 0) {
-
-                    if (isJ1Playing==0) {
-                        color(4,0);
-                        printf("O matchsticks left\n %s you have lost!\n", yourName);
-                        color(15,0);
-                        decide();
-                        break;
-
-                    }else{
-                        color(4,0);
-                        printf("O matchsticks left\n you have lost mrRobot!\n");
-                        color(15,0);
-                        decide();
-                        break;
-
-                    }
-
-
-                }
-                printf("\n");
-                printf("%d"" matchsticks left\n", matchsticksNumbers);
-                break;
+            matchsticksNumbers = matchsticksNumbers - matchComputer;
+            displayMatchs(matchsticksNumbers);
 
 
 
-                }
-
+            printf("\n");
+            printf("%d matchsticks left\n", matchsticksNumbers);
 
         }
-
 
 
 
@@ -469,6 +443,7 @@ void difficult() {
 
     }
 
+}
 
 
 //Second function, the computer plays against the player according to the player's choice of level
